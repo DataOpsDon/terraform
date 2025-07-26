@@ -1,0 +1,28 @@
+parameters:
+  - name: serviceConnection
+    default: ""
+  - name: stateServiceConnection
+    default: ""
+  - name: environmentVariableGroup
+    default: ""
+  - name: environment
+    default: ""
+  - name: landingZone
+    default: ""
+  - name: location
+    default: ""
+  - name: agentPool
+    default: ""
+  - name: frameworkType
+    default: ""  
+jobs:
+  - template: "../../../templates/yaml/deploy-terraform.yml"
+    parameters:
+      environment: ${{ parameters.environment }}
+      environmentVariableGroup: ${{parameters.environmentVariableGroup}}
+      landingZone: ${{ parameters.landingZone }}
+      serviceConnection: "${{ parameters.serviceConnection}}"
+      stateServiceConnection: "${{ parameters.serviceConnection}}"
+      terraformPath: "data-landing-zone/infrastructure"
+      agentPool: ${{ parameters.agentPool }}
+      terraformVars: ""

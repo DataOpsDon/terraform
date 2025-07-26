@@ -1,0 +1,57 @@
+parameters:
+- name: name
+  default: ''
+- name: displayName
+  default: ''
+- name: environment
+  default: ''
+- name: agentPool
+  default: ''
+- name: environmentVariableGroup
+  default: ''
+- name: appVariableGroup
+  default: ''
+- name: serviceConnection
+  default: ''
+- name: functionAppVariablesNamespace
+  default: 'FunctionApp'
+- name: artifactName
+  default: ''
+- name: dependsOn
+  type: object
+  default: []
+
+jobs:
+  - deployment: ${{ parameters.name }}
+    displayName: ${{ parameters.displayName }}
+    dependsOn: ${{ parameters.dependsOn }}
+    pool: 
+      name: ${{ parameters.agentPool }}
+    variables: 
+    - group: ${{ parameters.environmentVariableGroup }}
+    environment: ${{ parameters.environment }}
+    strategy:
+      runOnce:
+        deploy:        
+          steps:
+          - download: current
+            displayName: Download Function App Artifact
+            artifact: ${{ parameters.artifactName }}
+
+          - powershell: | 
+               nslookup func-ccdwh-dmlz-dev-neu-01.azurewebsites.net
+            displayName: Check DNS
+
+
+          - powershell: | 
+               nslookup func-ccdwh-dmlz-dev-neu-01.scm.azurewebsites.net
+            displayName: Check DNS
+
+          - task: AzureFunctionApp@1
+            displayName: Deploy Function App
+            condition: and(succeeded(), eq(variables['${{ parameters.functionAppVariablesNamespace }}.DeployCode'], 'true'))
+            inputs:
+              azureSubscription: ${{ parameters.serviceConnection }}
+              appType: functionApp
+              appName: $(${{ parameters.functionAppVariablesNamespace }}.Name)
+              package: $(Pipeline.Workspace)/${{ parameters.artifactName }}/*.zip

@@ -1,0 +1,35 @@
+parameters:
+- name: name
+  default: ''
+- name: displayName
+  default: ''
+- name: vmImage
+  default: ''
+- name: projectName
+  default: ''
+- name: artifactName
+  default: ''
+
+jobs:
+- job: ${{ parameters.name }}
+  displayName: ${{ parameters.displayName }}
+  pool: 
+    vmImage: ${{ parameters.vmImage }}
+  steps:
+  - task: DotNetCoreCLI@2
+    displayName: 'Restore Nuget Packages'
+    inputs:
+      command: restore
+      projects: '**/${{ parameters.projectName }}.csproj'
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Publish Function App to Staging Directory'
+    inputs:
+      command: publish
+      publishWebProjects: false
+      projects: '**/${{ parameters.projectName }}.csproj'
+      arguments: '--no-restore --configuration Release --output $(build.artifactstagingdirectory)/${{ parameters.artifactName }}'
+
+  - publish: '$(Build.ArtifactStagingDirectory)/${{ parameters.artifactName }}'
+    displayName: 'Publish Artifact'
+    artifact: ${{ parameters.artifactName }}

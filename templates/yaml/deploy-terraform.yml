@@ -1,0 +1,114 @@
+parameters:
+  - name: name
+    default: ""
+  - name: displayName
+    default: ""
+  - name: agentPool
+    default: ""
+  - name: environmentVariableGroup
+    default: ""
+  - name: serviceConnection
+    default: ""
+  - name: stateServiceConnection
+    default: ""
+  - name: environment
+    default: ""
+  - name: landingZone
+    default: ""
+  - name: infrastructureVariableGroup
+    default: ""
+  - name: terraformVars
+    default: ""
+  - name: dependsOn
+    type: object
+    default: []
+  - name: environmentVariables
+    type: object
+    default: {}
+  - name: location
+    default: ""
+  - name: terraformPath
+    default: ""
+  - name: frameworkType
+    default: ""
+
+
+jobs:
+  - deployment: "DeployTerraform"
+    displayName: "Deploy Terraform"
+    dependsOn: ${{ parameters.dependsOn }}
+    environment: ${{ parameters.environment }}  
+    pool:
+      agentPool:  ${{ parameters.agentPool }}
+    variables:
+    - template: ../../${{ parameters.landingZone  }}/yaml/state.yml
+      parameters:
+        environment: ${{ parameters.environment }}
+        landingZone: ${{ parameters.landingZone }}
+    strategy:
+     runOnce:
+      deploy:        
+        steps:
+          - task: DeleteFiles@1
+            inputs:
+              SourceFolder: '$(Pipeline.Workspace)/terraform/'
+              Contents: |
+               *
+      
+          - download: current
+            artifact: "terraform"
+            displayName: "Download Terraform Artifact"
+          
+          - script: |
+             git config --global http.https://dev.azure.com/MerlinDigital/IaC%20Common.extraheader "Authorization: bearer  $(System.AccessToken)"
+            displayName: 'Setup TerraformModules access header'         
+          
+          - script: |
+              chmod +x $(Pipeline.Workspace)/terraform/templates/tests/scripts/tf-install.sh
+              make tf-install 
+            displayName: 'Install Terraform'
+            workingDirectory: $(Pipeline.Workspace)/terraform/
+
+          - task: AzureCLI@2
+            name: set_variables
+            displayName: Configure Variables
+            inputs:
+              azureSubscription: ${{ parameters.serviceConnection }}
+              addSpnToEnvironment: true
+              scriptType: pscore
+              scriptLocation: inlineScript
+              inlineScript: |
+                Write-Host "##vso[task.setvariable variable=ARM_USE_OIDC]true"
+                Write-Host "##vso[task.setvariable variable=ARM_OIDC_TOKEN]$env:idToken"
+                Write-Host "##vso[task.setvariable variable=ARM_CLIENT_ID]$env:servicePrincipalId"
+                Write-Host "##vso[task.setvariable variable=ARM_SUBSCRIPTION_ID]$(az account show --query id -o tsv)"
+                Write-Host "##vso[task.setvariable variable=ARM_TENANT_ID]$env:tenantId"
+  
+          - task: AzureCLI@2
+            displayName: 'Terraform Init'
+            inputs:
+              azureSubscription: ${{ parameters.stateServiceConnection }}
+              scriptType: 'bash'
+              scriptLocation: 'inlineScript'
+              workingDirectory: $(Pipeline.Workspace)/terraform/
+              inlineScript: |
+                  chmod +x $(Pipeline.Workspace)/terraform/templates/tests/scripts/tf-init.sh
+                  TFSTATE_FILE=state \
+                  STORAGE_ACCOUNT_NAME=${{ variables.stateStorageAccountName }} \
+                  STORAGE_ACCOUNT_RSG_NAME=${{ variables.stateResourceGroupName }} \
+                  CONTAINER_NAME=${{ variables.stateStorageAccountContainerName }} \
+                  SUBSCRIPTION_ID=$(Deployment.SubscriptionId) \
+                  PIPELINE_WORKSPACE=$(Pipeline.Workspace)/terraform/${{ parameters.landingzone }}/terraform \
+                  make tf-init    
+
+          - task: AzureCLI@2
+            displayName: 'Terraform Apply'
+            inputs:            
+              azureSubscription: ${{ parameters.serviceConnection }}
+              scriptType: 'bash'
+              scriptLocation: 'inlineScript'
+              failOnStandardError: true
+              workingDirectory: $(Pipeline.Workspace)/terraform/
+              inlineScript: |
+                  chmod +x $(Pipeline.Workspace)/terraform/templates/tests/scripts/tf-apply.sh
+                  PIPELINE_WORKSPACE=$(Pipeline.Workspace)/terraform/${{ parameters.landingzone }}/terraform PIPELINE_ENVIRONMENT=${{ parameters.environment }} PIPELINE_VARIABLES=${{ parameters.terraformVars }}  make tf-apply 

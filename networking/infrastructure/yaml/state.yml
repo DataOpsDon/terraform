@@ -1,0 +1,19 @@
+# File: variables/build.yml
+parameters:
+
+- name: environment
+  default: ""
+
+- name: landingZone
+  default: ""
+
+variables:
+
+- name: stateResourceGroupName
+  value: 'rg-dataplatformshared-pr001'
+
+- name: stateStorageAccountName
+  value: 'stmegdataiacpr001'
+
+- name: stateStorageAccountContainerName
+  value: 'network-${{ parameters.environment }}'

@@ -1,0 +1,96 @@
+parameters:
+  - name: buildTemplatePath
+    default: ""
+  - name: deployTemplatePath
+    default: ""
+  - name: landingZone
+    default: ""
+  - name: serviceConnection
+    default: ""
+  - name: frameworkType
+    default: ""
+stages:
+
+- ${{ if or(eq(variables['Build.SourceBranch'], 'refs/heads/develop'), startsWith(variables['Build.SourceBranch'], 'refs/heads/feature/'), startsWith(variables['Build.SourceBranch'], 'refs/heads/release/')) }}:
+   - stage: BUILDDEV
+     displayName: BUILD DEV
+     jobs:
+       - template: ${{ parameters.buildTemplatePath }}
+         parameters:
+           serviceConnection: "scn-iac-dev"
+           stateServiceConnection: "scn-iac-dev"
+           landingZone: ${{ parameters.landingZone }}
+           environment: "dev"
+           agentPool: "ubuntu-latest"
+           location: "uk south"
+
+
+   - stage: DEV
+     displayName: DEV
+     dependsOn: [BUILDDEV]
+     jobs:
+     - template: '${{ parameters.deployTemplatePath }}'
+       parameters:
+         serviceConnection: "scn-iac-dataplatform-dev"
+         stateServiceConnection: "scn-iac-dataplatform-dev-tfstate"
+         landingZone: ${{ parameters.landingZone }}
+         environment: "dev"
+         agentPool: "ubuntu-latest"
+         location: "uk south"
+         environmentVariableGroup: 'DEV'
+
+  
+  
+- ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/main') }}:
+   - stage: BUILDTEST
+     displayName: BUILD TEST
+     jobs:
+     - template: ${{ parameters.buildTemplatePath }}
+       parameters:
+         serviceConnection: "scn-iac-dataplatform-tst"
+         stateServiceConnection: "scn-iac-dataplatform-tst-tfstate"
+         landingZone: ${{ parameters.landingZone }}
+         environment: "tst"
+         agentPool: "ubuntu-latest"
+         location: "uk south"
+
+   - stage: TEST
+     displayName: Test
+     dependsOn: [BUILDTEST]
+     jobs:
+     - template: '${{ parameters.deployTemplatePath }}'
+       parameters:
+         serviceConnection: "scn-iac-dataplatform-tst"
+         stateServiceConnection: "scn-iac-dataplatform-tst-tfstate"
+         landingZone: ${{ parameters.landingZone }}
+         environment: "tst"
+         agentPool: "ubuntu-latest"
+         location: "uk south"
+         environmentVariableGroup: 'tst'
+         
+- ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/main') }}:
+  - stage: BUILDPROD
+    displayName: BUILD PROD
+    jobs:
+    - template: ${{ parameters.buildTemplatePath }}
+      parameters:
+        serviceConnection: "scn-iac-dataplatform-prd"
+        stateServiceConnection: "scn-iac-dataplatform-prd-tfstate"
+        landingZone: ${{ parameters.landingZone }}
+        environment: "prd"
+        agentPool: "ubuntu-latest"
+        location: "uk south"
+
+  - stage: PROD
+    displayName: Prod
+    dependsOn: [BUILDPROD]
+    jobs:
+    - template: '${{ parameters.deployTemplatePath }}'
+      parameters:
+        serviceConnection: "scn-iac-dataplatform-prd"
+        stateServiceConnection: "scn-iac-dataplatform-prd-tfstate"
+        landingZone: ${{ parameters.landingZone }}
+        environment: "prd"
+        agentPool: "ubuntu-latest"
+        location: "uk south"
+        environmentVariableGroup: 'prd'   

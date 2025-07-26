@@ -1,0 +1,37 @@
+parameters:
+  - name: serviceConnection
+    default: ""
+  - name: stateServiceConnection
+    default: ""
+  - name: environmentVariableGroup
+    default: ""
+  - name: environment
+    default: ""
+  - name: landingZone
+    default: ""
+  - name: agentPool
+    default: ""
+  - name: location
+    default: ""
+jobs:
+  - template: "../../../templates/yaml/build-terraform.yml"
+    parameters:
+      environment: ${{ parameters.environment }}
+      environmentVariableGroup: ${{parameters.environmentVariableGroup}}
+      landingZone: ${{ parameters.landingZone }}
+      serviceConnection: "${{ parameters.serviceConnection}}"
+      stateServiceConnection: "${{ parameters.stateServiceConnection}}"
+      agentPool: ${{ parameters.agentPool }}
+      location: ${{ parameters.location }}
+      terraformVars: ""
+
+
+  - template: "../../../templates/yaml/run-terraform-checks.yml"
+    parameters:
+      environment: ${{ parameters.environment }}
+      environmentVariableGroup: ${{parameters.environmentVariableGroup}}
+      landingZone: ${{ parameters.landingZone }}   
+      serviceConnection: "${{ parameters.serviceConnection}}"
+      agentPool: ${{ parameters.agentPool }}
+      location: ${{ parameters.location }}
+      dependsOn: ["BuildTerraform"]

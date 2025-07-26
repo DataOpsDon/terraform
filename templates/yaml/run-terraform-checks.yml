@@ -1,0 +1,64 @@
+parameters:
+  - name: name
+    default: ""
+  - name: displayName
+    default: ""
+  - name: agentPool
+    default: ""
+  - name: environmentVariableGroup
+    default: ""
+  - name: serviceConnection
+    default: ""
+  - name: environment
+    default: ""
+  - name: landingZone
+    default: ""
+  - name: dependsOn
+    type: object
+    default: []
+  - name: environmentVariables
+    type: object
+    default: {}
+  - name: location
+    default: ""
+
+jobs:
+  - job: "TFChecks"
+    displayName: "Run TF Checks"
+    dependsOn: ${{ parameters.dependsOn }}
+    pool:
+      name:  ${{ parameters.agentPool }}
+    variables: 
+    - template: ../../${{ parameters.landingZone  }}/yaml/state.yml
+      parameters:
+        environment: ${{ parameters.environment }}
+        landingZone: ${{ parameters.landingZone }}
+    steps:
+
+      - task: DeleteFiles@1
+        inputs:
+          SourceFolder: '$(Pipeline.Workspace)/terraform/'
+          Contents: |
+           *
+      
+      - publish: ""
+        displayName: "Publish Terraform Artifact"
+        artifact: "terraform"
+      
+      - download: current
+        artifact: "terraform"
+        displayName: "Download Terraform Artifact"
+
+
+############################################################################################################
+
+# Checkov task
+
+############################################################################################################
+
+      - task: PublishTestResults@2
+        inputs:
+          testResultsFormat: JUnit
+          testResultsFiles: $(Pipeline.Workspace)/terraform/${{ parameters.landingzone }}/terraform/checkov-plan-report.xml
+          searchFolder: $(Pipeline.Workspace)/terraform/${{ parameters.landingzone }}/terraform
+        displayName: Publish checkov results

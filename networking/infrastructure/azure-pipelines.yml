@@ -1,0 +1,21 @@
+trigger:
+  branches:
+    include:
+    - main
+    - develop
+    - release/*
+    - feature/cicd/*
+    - feature/*
+
+  paths:
+    include: 
+    - networking/infrastructure
+    - feature/*
+
+stages: 
+  - template: ../../templates/yaml/environments.yml
+    parameters:
+      buildTemplatePath:  ../../networking/infrastructure/yaml/build.yml
+      deployTemplatePath: ../../networking/infrastructure/yaml/deploy.yml
+      landingZone:        networking/infrastructure
+   
