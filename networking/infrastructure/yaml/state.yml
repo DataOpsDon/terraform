@@ -13,10 +13,10 @@ variables:
   value: '1e1f62ac-0120-4c72-b6a7-87eb14060fb9'
 
 - name: stateResourceGroupName
-  value: 'rg-dataplatformshared-pr001'
+  value: 'rg-alz-mgmt-state-uksouth-001'
 
 - name: stateStorageAccountName
-  value: 'stmegdataiacpr001'
+  value: 'stterrajd01'
 
 - name: stateStorageAccountContainerName
   value: 'network-${{ parameters.environment }}'
