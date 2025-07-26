@@ -18,6 +18,14 @@ RSG_NAME="$DEFAULT_PREFIX"
 # Set STORAGE_ACCOUNT_RSG_NAME to an output variable for downstream consumption.
 echo "##vso[task.setVariable variable=STORAGE_ACCOUNT_RSG_NAME;isOutput=true]$RSG_NAME"
 
+az storage account create \
+    --name "$SA_NAME" \
+    --resource-group "$RSG_NAME" \
+    --location "$PRIMARY_LOCATION" \
+    --sku Standard_LRS \
+    --encryption-services blob \
+    --query 'name' \
+    --out tsv
 
 echo "==> Create or update Storage Account container..."
 az storage container create \
