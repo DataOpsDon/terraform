@@ -24,7 +24,6 @@ az storage container create \
     --name "$SC_NAME" \
     --account-name "$SA_NAME" \
     --query 'created' \
-    --auth-mode login \
     --out tsv
 ##
 ### Set STORAGE_CONTAINER_NAME to an output variable for downstream consumption.
