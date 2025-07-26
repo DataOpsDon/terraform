@@ -27,7 +27,7 @@ jobs:
     displayName: "Run TF Checks"
     dependsOn: ${{ parameters.dependsOn }}
     pool:
-      name:  ${{ parameters.agentPool }}
+      vmImage:  ${{ parameters.agentPool }}
     variables: 
     - template: ../../${{ parameters.landingZone  }}/yaml/state.yml
       parameters:

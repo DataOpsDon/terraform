@@ -31,7 +31,7 @@ jobs:
     displayName: "Build Terraform"
     dependsOn: ${{ parameters.dependsOn }}
     pool:
-      agentPool:  ${{ parameters.agentPool }}
+      vmImage:  ${{ parameters.agentPool }}
     variables: 
     - template: ../../${{ parameters.landingZone  }}/yaml/state.yml
       parameters:
