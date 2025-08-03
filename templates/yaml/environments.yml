@@ -32,7 +32,7 @@ stages:
      - template: '${{ parameters.deployTemplatePath }}'
        parameters:
          serviceConnection: "scn-iac-dev"
-         stateServiceConnection: "scn-iac-dev-tfstate"
+           stateServiceConnection: "scn-iac-dev"
          landingZone: ${{ parameters.landingZone }}
          environment: "dev"
          agentPool: "ubuntu-latest"
