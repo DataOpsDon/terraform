@@ -4,3 +4,4 @@ module "resource_group" {
   name = "rg-${var.environment}-${var.location}-001"
   location = var.location
 }
+
