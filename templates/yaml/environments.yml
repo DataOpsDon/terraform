@@ -48,7 +48,7 @@ stages:
      - template: ${{ parameters.buildTemplatePath }}
        parameters:
          serviceConnection: "scn-iac-dev"
-         stateServiceConnection: "scn-iac-dev-tfstate"
+         stateServiceConnection: "scn-iac-dev"
          landingZone: ${{ parameters.landingZone }}
          environment: "tst"
          agentPool: "ubuntu-latest"
@@ -61,10 +61,23 @@ stages:
      - template: '${{ parameters.deployTemplatePath }}'
        parameters:
          serviceConnection: "scn-iac-dev"
-         stateServiceConnection: "scn-iac-dev-tfstate"
+         stateServiceConnection: "sscn-iac-dev"
          landingZone: ${{ parameters.landingZone }}
          environment: "tst"
          agentPool: "ubuntu-latest"
          location: "uk south"
          environmentVariableGroup: 'tst'
          
+   - stage: TEST
+     displayName: TEST
+     dependsOn: [BUILDTEST]
+     jobs:
+     - template: '${{ parameters.deployTemplatePath }}'
+       parameters:
+         serviceConnection: "scn-iac-dev"
+         stateServiceConnection: "scn-iac-dev"
+         landingZone: ${{ parameters.landingZone }}
+         environment: "tst"
+         agentPool: "ubuntu-latest"
+         location: "uk south"
+         environmentVariableGroup: 'DEV'
