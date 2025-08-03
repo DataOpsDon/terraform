@@ -17,5 +17,5 @@ stages:
     parameters:
       buildTemplatePath:  ../../networking/infrastructure/yaml/build.yml
       deployTemplatePath: ../../networking/infrastructure/yaml/deploy.yml
-      landingZone:        networking/infrastructure
+      landingZone:        networking
    

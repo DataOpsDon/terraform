@@ -98,7 +98,7 @@ jobs:
                   STORAGE_ACCOUNT_RSG_NAME=${{ variables.stateResourceGroupName }} \
                   CONTAINER_NAME=${{ variables.stateStorageAccountContainerName }} \
                   SUBSCRIPTION_ID=$(Deployment.SubscriptionId) \
-                  PIPELINE_WORKSPACE=$(Pipeline.Workspace)/terraform/${{ parameters.landingzone }}/terraform \
+                  PIPELINE_WORKSPACE=$(Pipeline.Workspace)/terraform/${{ parameters.landingzone }}/infrastructure/terraform \
                   make tf-init    
 
           - task: AzureCLI@2
@@ -111,4 +111,4 @@ jobs:
               workingDirectory: $(Pipeline.Workspace)/terraform/
               inlineScript: |
                   chmod +x $(Pipeline.Workspace)/terraform/templates/tests/scripts/tf-apply.sh
-                  PIPELINE_WORKSPACE=$(Pipeline.Workspace)/terraform/${{ parameters.landingzone }}/terraform PIPELINE_ENVIRONMENT=${{ parameters.environment }} PIPELINE_VARIABLES=${{ parameters.terraformVars }}  make tf-apply 
+                  PIPELINE_WORKSPACE=$(Pipeline.Workspace)/terraform/${{ parameters.landingzone }}/infrastructure/terraform PIPELINE_ENVIRONMENT=${{ parameters.environment }} PIPELINE_VARIABLES=${{ parameters.terraformVars }}  make tf-apply 

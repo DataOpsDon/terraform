@@ -36,7 +36,7 @@ jobs:
     - template: ../../${{ parameters.landingZone  }}/yaml/state.yml
       parameters:
         environment: ${{ parameters.environment }}
-        landingZone: ${{ parameters.landingZone }}
+        landingZone: ${{ parameters.landingzone }}
     steps:
       - task: DeleteFiles@1
         inputs:
@@ -100,7 +100,7 @@ jobs:
               STORAGE_ACCOUNT_RSG_NAME=${{ variables.stateResourceGroupName }} \
               CONTAINER_NAME=${{ variables.stateStorageAccountContainerName }} \
               SUBSCRIPTION_ID=${{ variables.stateSubscriptionId }} \
-              PIPELINE_WORKSPACE=$(Pipeline.Workspace)/terraform/${{ parameters.landingzone }}/terraform \
+              PIPELINE_WORKSPACE=$(Pipeline.Workspace)/terraform/${{ parameters.landingzone }}/infrastructure/terraform \
               make tf-init       
         displayName: 'Terraform Init'
   
@@ -112,7 +112,7 @@ jobs:
           scriptLocation: 'inlineScript'
           inlineScript: |
               chmod +x ./templates/tests/scripts/tf-plan.sh
-              PIPELINE_WORKSPACE=$(Pipeline.Workspace)/terraform/${{ parameters.landingzone }}/terraform \
+              PIPELINE_WORKSPACE=$(Pipeline.Workspace)/terraform/${{ parameters.landingzone }}/infrastructure/terraform \
               PIPELINE_ENVIRONMENT=${{ parameters.environment }} \
               PIPELINE_VARIABLES=${{ parameters.terraformVars }} \
               make tf-plan 
@@ -127,7 +127,7 @@ jobs:
 
       - task: Bash@3
         inputs:
-          workingDirectory: $(Pipeline.Workspace)/terraform/${{ parameters.landingzone }}/terraform
+          workingDirectory: $(Pipeline.Workspace)/terraform/${{ parameters.landingzone }}/infrastructure/terraform
           targetType: 'inline'
           script: |
               sudo apt-get update
@@ -145,10 +145,10 @@ jobs:
             export PATH=$PATH:/home/AzDevOps/.local/bin
             echo Write your commands here
             echo "checkov plan testing started."
-            terraform show -json $(Pipeline.Workspace)/terraform/${{ parameters.landingzone }}/terraform/plan > $(Pipeline.Workspace)/terraform/${{ parameters.landingzone }}/terraform/tf.json
+            terraform show -json $(Pipeline.Workspace)/terraform/${{ parameters.landingzone }}/infrastructure/terraform/plan > $(Pipeline.Workspace)/terraform/${{ parameters.landingzone }}/infrastructure/terraform/tf.json
             echo "plan json file created."
             echo "Check checkov version"
-          workingDirectory: $(Pipeline.Workspace)/terraform/${{ parameters.landingzone }}/terraform
+          workingDirectory: $(Pipeline.Workspace)/terraform/${{ parameters.landingzone }}/infrastructure/terraform
           failOnStderr: true
         displayName: Convert tfplan to json
 
@@ -158,15 +158,15 @@ jobs:
           script: |
             export PATH=$PATH:/home/AzDevOps/.local/bin
             echo Write your commands here
-            checkov --skip-check CKV_AZURE_33,CKV2_AZURE_1,CKV_AZURE_93,CKV_AZURE_206,CKV_AZURE_59,CKV2_AZURE_1,CKV_AZURE_93,CKV_AZURE_70  -f $(Pipeline.Workspace)/terraform/${{ parameters.landingzone }}/terraform/tf.json -o junitxml > $(Pipeline.Workspace)/terraform/${{ parameters.landingzone }}/terraform/checkov-plan-report.xml
+            checkov --skip-check CKV_AZURE_33,CKV2_AZURE_1,CKV_AZURE_93,CKV_AZURE_206,CKV_AZURE_59,CKV2_AZURE_1,CKV_AZURE_93,CKV_AZURE_70  -f $(Pipeline.Workspace)/terraform/${{ parameters.landingzone }}/infrastructure/terraform/tf.json -o junitxml > $(Pipeline.Workspace)/terraform/${{ parameters.landingzone }}/infrastructure/terraform/checkov-plan-report.xml
             echo "checkov plan testing ended."
-          workingDirectory: $(Pipeline.Workspace)/terraform/${{ parameters.landingzone }}/terraform
+          workingDirectory: $(Pipeline.Workspace)/terraform/${{ parameters.landingzone }}/infrastructure/terraform
           failOnStderr: false
         displayName: Run checkov on tfplan
 
       - task: PublishTestResults@2
         inputs:
           testResultsFormat: JUnit
-          testResultsFiles: $(Pipeline.Workspace)/terraform/${{ parameters.landingzone }}/terraform/checkov-plan-report.xml
-          searchFolder: $(Pipeline.Workspace)/terraform/${{ parameters.landingzone }}/terraform
+          testResultsFiles: $(Pipeline.Workspace)/terraform/${{ parameters.landingzone }}/infrastructure/terraform/checkov-plan-report.xml
+          searchFolder: $(Pipeline.Workspace)/terraform/${{ parameters.landingzone }}/infrastructure/terraform
         displayName: Publish checkov results
