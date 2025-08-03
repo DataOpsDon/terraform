@@ -47,8 +47,8 @@ stages:
      jobs:
      - template: ${{ parameters.buildTemplatePath }}
        parameters:
-         serviceConnection: "scn-iac-tst"
-         stateServiceConnection: "scn-iac-tst-tfstate"
+         serviceConnection: "scn-iac-dev"
+         stateServiceConnection: "scn-iac-dev-tfstate"
          landingZone: ${{ parameters.landingZone }}
          environment: "tst"
          agentPool: "ubuntu-latest"
@@ -60,37 +60,11 @@ stages:
      jobs:
      - template: '${{ parameters.deployTemplatePath }}'
        parameters:
-         serviceConnection: "scn-iac-tst"
-         stateServiceConnection: "scn-iac-tst-tfstate"
+         serviceConnection: "scn-iac-dev"
+         stateServiceConnection: "scn-iac-dev-tfstate"
          landingZone: ${{ parameters.landingZone }}
          environment: "tst"
          agentPool: "ubuntu-latest"
          location: "uk south"
          environmentVariableGroup: 'tst'
          
-- ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/main') }}:
-  - stage: BUILDPROD
-    displayName: BUILD PROD
-    jobs:
-    - template: ${{ parameters.buildTemplatePath }}
-      parameters:
-        serviceConnection: "scn-iac-prd"
-        stateServiceConnection: "scn-iac-prd-tfstate"
-        landingZone: ${{ parameters.landingZone }}
-        environment: "prd"
-        agentPool: "ubuntu-latest"
-        location: "uk south"
-
-  - stage: PROD
-    displayName: Prod
-    dependsOn: [BUILDPROD]
-    jobs:
-    - template: '${{ parameters.deployTemplatePath }}'
-      parameters:
-        serviceConnection: "scn-iac-prd"
-        stateServiceConnection: "scn-iac-prd-tfstate"
-        landingZone: ${{ parameters.landingZone }}
-        environment: "prd"
-        agentPool: "ubuntu-latest"
-        location: "uk south"
-        environmentVariableGroup: 'prd'   

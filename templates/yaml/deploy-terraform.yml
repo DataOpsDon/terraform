@@ -97,7 +97,7 @@ jobs:
                   STORAGE_ACCOUNT_NAME=${{ variables.stateStorageAccountName }} \
                   STORAGE_ACCOUNT_RSG_NAME=${{ variables.stateResourceGroupName }} \
                   CONTAINER_NAME=${{ variables.stateStorageAccountContainerName }} \
-                  SUBSCRIPTION_ID=$(Deployment.SubscriptionId) \
+                  SUBSCRIPTION_ID=${{ variables.stateSubscriptionId }} \
                   PIPELINE_WORKSPACE=$(Pipeline.Workspace)/terraform/${{ parameters.landingzone }}/infrastructure/terraform \
                   make tf-init    
 
