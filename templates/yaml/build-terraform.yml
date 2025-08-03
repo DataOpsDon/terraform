@@ -53,10 +53,6 @@ jobs:
         displayName: "Download Terraform Artifact"
 
       - script: |
-          git config --global http.https://dev.azure.com/MerlinDigital/IaC%20Common.extraheader "Authorization: bearer  $(System.AccessToken)"
-        displayName: 'Setup TerraformModules access header'
-
-      - script: |
            chmod +x ./templates/tests/scripts/tf-install.sh
            make tf-install 
         displayName: 'Install Terraform'
