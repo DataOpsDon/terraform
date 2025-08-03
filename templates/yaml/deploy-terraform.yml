@@ -41,7 +41,7 @@ jobs:
     pool:
       vmImage:  ${{ parameters.agentPool }}
     variables:
-    - template: ../../${{ parameters.landingZone  }}/yaml/state.yml
+    - template: ../../${{ parameters.landingZone  }}/infrastructure/yaml/state.yml
       parameters:
         environment: ${{ parameters.environment }}
         landingZone: ${{ parameters.landingZone }}
