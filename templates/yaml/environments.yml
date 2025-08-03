@@ -45,8 +45,8 @@ stages:
    - stage: BUILDTEST
      displayName: BUILD TEST
      jobs:
-     - template: ${{ parameters.buildTemplatePath }}
-       parameters:
+      - template: ${{ parameters.buildTemplatePath }}
+        parameters:
          serviceConnection: "scn-iac-dev"
          stateServiceConnection: "scn-iac-dev"
          landingZone: ${{ parameters.landingZone }}
@@ -58,8 +58,8 @@ stages:
      displayName: Test
      dependsOn: [BUILDTEST]
      jobs:
-     - template: '${{ parameters.deployTemplatePath }}'
-       parameters:
+      - template: '${{ parameters.deployTemplatePath }}'
+        parameters:
          serviceConnection: "scn-iac-dev"
          stateServiceConnection: "sscn-iac-dev"
          landingZone: ${{ parameters.landingZone }}
@@ -67,17 +67,3 @@ stages:
          agentPool: "ubuntu-latest"
          location: "uk south"
          environmentVariableGroup: 'tst'
-         
-   - stage: TEST
-     displayName: TEST
-     dependsOn: [BUILDTEST]
-     jobs:
-     - template: '${{ parameters.deployTemplatePath }}'
-       parameters:
-         serviceConnection: "scn-iac-dev"
-         stateServiceConnection: "scn-iac-dev"
-         landingZone: ${{ parameters.landingZone }}
-         environment: "tst"
-         agentPool: "ubuntu-latest"
-         location: "uk south"
-         environmentVariableGroup: 'DEV'
