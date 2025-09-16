@@ -9,13 +9,13 @@ trigger:
 
   paths:
     include: 
-    - networking/infrastructure
+    - alz/infrastructure
     - feature/*
 
 stages: 
   - template: ../../templates/yaml/environments.yml
     parameters:
-      buildTemplatePath:  ../../networking/infrastructure/yaml/build.yml
-      deployTemplatePath: ../../networking/infrastructure/yaml/deploy.yml
-      landingZone:        networking
+      buildTemplatePath:  ../../alz/infrastructure/yaml/build.yml
+      deployTemplatePath: ../../alz/infrastructure/yaml/deploy.yml
+      landingZone:        alz
    
