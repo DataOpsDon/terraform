@@ -6,9 +6,9 @@
             "archetypes": [
                 "root_custom"
             ],
-            "display_name": "JD Enterprise Platform",
+            "display_name": "JD Enterprise Azure Platform",
             "exists": false,
-            "id": "JD-EDP",
+            "id": "JD-AEDP",
             "parent_id": null
         },
         {
@@ -18,7 +18,7 @@
             "display_name": "Platform",
             "exists": false,
             "id": "JD-Platform",
-            "parent_id": "JD-EDP"
+            "parent_id": "JD-AEDP"
         },
         {
             "archetypes": [
@@ -27,7 +27,7 @@
             "display_name": "Landing Zones",
             "exists": false,
             "id": "JD-Landingzones",
-            "parent_id": "JD-EDP"
+            "parent_id": "JD-AEDP"
         },
         {
             "archetypes": [
@@ -54,7 +54,7 @@
             "display_name": "Sandboxes",
             "exists": false,
             "id": "JD-Sandboxes",
-            "parent_id": "JD-EDP"
+            "parent_id": "JD-AEDP"
         },
         {
             "archetypes": [
@@ -90,7 +90,7 @@
             "display_name": "Decommissioned",
             "exists": false,
             "id": "JD-Decommissioned",
-            "parent_id": "JD-EDP"
+            "parent_id": "JD-AEDP"
         }
     ]
 }
