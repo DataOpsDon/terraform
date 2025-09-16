@@ -16,8 +16,6 @@ provider "azurerm" {
   use_oidc        = true
   subscription_id = var.subscription_id
 }
-
-
 provider "alz" {
   library_overwrite_enabled = true
   library_references = [

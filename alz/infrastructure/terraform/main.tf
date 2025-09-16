@@ -1,4 +1,3 @@
-// ALZ pattern module which deploys ALZ architecture and also integrates AMBA policies
 module "avm-ptn-alz" {
   source                 = "Azure/avm-ptn-alz/azurerm"
   version                = "0.12.2"
