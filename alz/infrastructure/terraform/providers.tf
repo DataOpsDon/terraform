@@ -26,10 +26,6 @@ provider "alz" {
       ref  = "2025.09.0"
     },
     {
-      "path" : "platform/amba",
-      "ref" : "2025.05.0"
-    },
-    {
       custom_url = "${path.root}/lib"
     }
   ]

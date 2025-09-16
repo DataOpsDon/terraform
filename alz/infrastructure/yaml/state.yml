@@ -19,4 +19,4 @@ variables:
   value: 'stterrajd01'
 
 - name: stateStorageAccountContainerName
-  value: '${{ parameters.landingZone }}-${{ parameters.environment }}'
+  value: '${{ parameters.landingZone }}-${{ parameters.environment }}-01'
