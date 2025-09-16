@@ -9,7 +9,7 @@
             "display_name": "JD Enterprise Platform",
             "exists": false,
             "id": "JD-EDP",
-            "parent_id": "JD-ALZ-OnshoreOnly"
+            "parent_id": null
         },
         {
             "archetypes": [
