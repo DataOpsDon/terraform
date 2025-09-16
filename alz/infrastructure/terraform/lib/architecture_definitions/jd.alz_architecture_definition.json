@@ -6,9 +6,9 @@
             "archetypes": [
                 "root_custom"
             ],
-            "display_name": "JD Enterprise Azure Platform",
+            "display_name": "JD AZ Enterprise Azure Platform",
             "exists": false,
-            "id": "JD-AEDP",
+            "id": "JDAZ-EDP",
             "parent_id": null
         },
         {
@@ -17,8 +17,8 @@
             ],
             "display_name": "Platform",
             "exists": false,
-            "id": "JD-Platform",
-            "parent_id": "JD-AEDP"
+            "id": "JDAZ-Platform",
+            "parent_id": "JDAZ-EDP"
         },
         {
             "archetypes": [
@@ -26,8 +26,8 @@
             ],
             "display_name": "Landing Zones",
             "exists": false,
-            "id": "JD-Landingzones",
-            "parent_id": "JD-AEDP"
+            "id": "JDAZ-Landingzones",
+            "parent_id": "JDAZ-EDP"
         },
         {
             "archetypes": [
@@ -35,8 +35,8 @@
             ],
             "display_name": "Corp",
             "exists": false,
-            "id": "JD-Corp",
-            "parent_id": "JD-Landingzones"
+            "id": "JDAZ-Corp",
+            "parent_id": "JDAZ-Landingzones"
         },
         {
             "archetypes": [
@@ -44,8 +44,8 @@
             ],
             "display_name": "Online",
             "exists": false,
-            "id": "JD-Online",
-            "parent_id": "JD-Landingzones"
+            "id": "JDAZ-Online",
+            "parent_id": "JDAZ-Landingzones"
         },
         {
             "archetypes": [
@@ -53,8 +53,8 @@
             ],
             "display_name": "Sandboxes",
             "exists": false,
-            "id": "JD-Sandboxes",
-            "parent_id": "JD-AEDP"
+            "id": "JDAZ-Sandboxes",
+            "parent_id": "JDAZ-EDP"
         },
         {
             "archetypes": [
@@ -62,8 +62,8 @@
             ],
             "display_name": "Management",
             "exists": false,
-            "id": "JD-Management",
-            "parent_id": "JD-Platform"
+            "id": "JDAZ-Management",
+            "parent_id": "JDAZ-Platform"
         },
         {
             "archetypes": [
@@ -71,8 +71,8 @@
             ],
             "display_name": "Connectivity",
             "exists": false,
-            "id": "JD-Connectivity",
-            "parent_id": "JD-Platform"
+            "id": "JDAZ-Connectivity",
+            "parent_id": "JDAZ-Platform"
         },
         {
             "archetypes": [
@@ -80,8 +80,8 @@
             ],
             "display_name": "Identity",
             "exists": false,
-            "id": "JD-Identity",
-            "parent_id": "JD-Platform"
+            "id": "JDAZ-Identity",
+            "parent_id": "JDAZ-Platform"
         },
         {
             "archetypes": [
@@ -89,8 +89,8 @@
             ],
             "display_name": "Decommissioned",
             "exists": false,
-            "id": "JD-Decommissioned",
-            "parent_id": "JD-AEDP"
+            "id": "JDAZ-Decommissioned",
+            "parent_id": "JDAZ-EDP"
         }
     ]
 }
