@@ -1,0 +1,5 @@
+subscription_id                      = "7aa42372-d80a-4627-be71-d4230e4ec0ce"
+location                             = "uksouth"
+connectivity_subscription_id         = "767dc19e-6e66-4dd6-acf9-66743ca4e400"
+private_dns_zone_resource_group_name = "rg-uks-edp-h1s00-hub-dns"
+logging = "/subscriptions/7aa42372-d80a-4627-be71-d4230e4ec0ce/resourcegroups/rg-uks-edp-h1s01-sec-log/providers/microsoft.operationalinsights/workspaces/law-uks-edp-h1s01-sec"

@@ -1,0 +1,12 @@
+{
+  "$schema": "https://raw.githubusercontent.com/Azure/Azure-Landing-Zones-Library/main/schemas/archetype_override.json",
+  "name": "sandbox_custom",
+  "base_archetype": "sandbox",
+  "policy_assignments_to_add": [],
+  "policy_definitions_to_add": [],
+  "policy_set_definitions_to_add": [],
+  "role_definitions_to_add": [],
+  "policy_assignments_to_remove": [
+    "Enforce-ALZ-Sandbox"
+  ]
+}
