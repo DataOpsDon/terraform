@@ -23,7 +23,7 @@ provider "alz" {
   library_references = [
     {
       path = "platform/alz"
-      ref  = "2025.09.0"
+      ref  = "2025.02.0"
     },
     {
       custom_url = "${path.root}/lib"
