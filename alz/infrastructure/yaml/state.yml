@@ -16,7 +16,7 @@ variables:
   value: 'rg-alz-mgmt-state-uksouth-001'
 
 - name: stateStorageAccountName
-  value: 'stterrajd01'
+  value: 'stterrajd02'
 
 - name: stateStorageAccountContainerName
-  value: '${{ parameters.landingZone }}-${{ parameters.environment }}-02G'
+  value: '${{ parameters.landingZone }}-${{ parameters.environment }}'
