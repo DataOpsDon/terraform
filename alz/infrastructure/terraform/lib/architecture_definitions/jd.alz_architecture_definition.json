@@ -58,8 +58,7 @@
         },
         {
             "archetypes": [
-                "management_custom",
-                "amba_management"
+                "management_custom"
             ],
             "display_name": "Management",
             "exists": false,
@@ -68,8 +67,7 @@
         },
         {
             "archetypes": [
-                "connectivity_custom",
-                "amba_connectivity"
+                "connectivity_custom"
             ],
             "display_name": "Connectivity",
             "exists": false,
@@ -78,8 +76,7 @@
         },
         {
             "archetypes": [
-                "identity_custom",
-                "amba_identity"
+                "identity_custom"
             ],
             "display_name": "Identity",
             "exists": false,
