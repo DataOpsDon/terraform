@@ -5,7 +5,7 @@ module "avm-ptn-alz" {
   location               = var.location
   architecture_name      = "alz"
   policy_assignments_to_modify = {
-    alz = {
+    JDAZ-EDP = {
       policy_assignments = {
         Deploy-MDFC-Config-H224 = {
           parameters = {
