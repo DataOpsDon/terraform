@@ -10,6 +10,8 @@ module "avm-ptn-alz" {
         Deploy-MDFC-Config-H224 = {
           parameters = {
             enableAscForAI = jsonencode({ value = "Disabled" })
+            enableAscForAI_1 = jsonencode({ value = "Disabled" })
+
           }
         }
       }
