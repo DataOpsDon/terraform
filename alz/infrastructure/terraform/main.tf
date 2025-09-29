@@ -4,5 +4,16 @@ module "avm-ptn-alz" {
   parent_resource_id     = data.azurerm_client_config.main.tenant_id
   location               = var.location
   architecture_name      = "alz"
+  policy_assignments_to_modify = {
+    JDAZ-EDP = {
+      policy_assignments = {
+        Deploy-MDFC-Config-H224 = {
+          parameters = {
+            enableAscForAI = jsonencode({ value = "Disabled" })
+          }
+        }
+      }
+    }
+  }
 }
 
