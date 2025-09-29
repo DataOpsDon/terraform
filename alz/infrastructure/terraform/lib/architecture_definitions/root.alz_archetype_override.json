@@ -13,7 +13,6 @@
     "Deploy-ASC-Monitoring",
     "Deploy-MDEndpoints",
     "Deploy-MDEndpointsAMA",
-    "Deploy-MDFC-Config-H224",
     "Deploy-MDFC-OssDb",
     "Deploy-MDFC-SqlAtp",
     "Enforce-ACSB"
