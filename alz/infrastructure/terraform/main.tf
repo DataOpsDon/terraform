@@ -9,7 +9,7 @@ module "avm-ptn-alz" {
       policy_assignments = {
         Deploy-MDFC-Config-H224 = {
           parameters = {
-            enableAscForAI = jsonencode({ value = "Disabled" })
+            enableAscForAI = jsonencode({ value = "DeployIfNotExists" })
           }
         }
       }
